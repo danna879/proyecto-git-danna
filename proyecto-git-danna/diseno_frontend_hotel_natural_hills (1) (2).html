@@ -1,0 +1,299 @@
+<!doctype html>
+<!--
+  Diseño Frontend - Hotel Natural Hills
+  Archivo single-file HTML/CSS/JS listo para abrir en el navegador.
+  Incluye: Pantalla Inicio, Servicios, Habitaciones, Reservas, Mi Perfil y Panel Admin (simulado).
+  Referencia de imágenes (ya subidas):
+    - /mnt/data/A_digital_graphic_design_displays_the_welcome_scre.png  (inicio)
+    - /mnt/data/A_digital_graphic_design_showcases_services_offere.png (servicios)
+    - /mnt/data/A_digital_graphic_design_image_showcases_a_hotel_r.png (habitaciones)
+    - /mnt/data/A_2D_digital_graphic_design_of_a_reservation_form_.png (reservas)
+    - /mnt/data/A_digital_graphic_design_displays_the_welcome_scre.png (mi perfil - usa misma imagen como placeholder)
+
+  Instrucciones:
+  1) Guarda este archivo como "index.html" y ábrelo en tu navegador.
+  2) Si el navegador bloquea el acceso local a /mnt/data, sube las imágenes a la misma carpeta que el HTML
+     y ajusta los src (por ejemplo: ./inicio.png).
+  3) Puedes exportar a PDF desde el navegador (Imprimir -> Guardar como PDF) para anexarlo al trabajo.
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hotel Natural Hills - Diseño Frontend</title>
+  <style>
+    :root{
+      --fondo: #D6E7D3;
+      --bloque-principal: #2E5C3A;
+      --bloque-secundario: #7CAB7C;
+      --bloque-terciario: #C7DFBF;
+      --texto: #1A1A1A;
+
+      --max-width: 420px; /* ancho móvil para mockup */
+      --radius: 14px;
+      --card-padding: 18px;
+      --font-sans: 'Helvetica Neue', Arial, sans-serif;
+      --font-display: 'Georgia', serif;
+    }
+
+    /* Reset simple */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:var(--font-sans);
+      background:var(--fondo);
+      color:var(--texto);
+      display:flex;align-items:center;justify-content:center;padding:24px;
+    }
+
+    /* Contenedor centrado (simula pantalla móvil) */
+    .device{
+      width:100%;max-width:var(--max-width);background:linear-gradient(#f6fbf6,#eef7ef);border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,0.08);overflow:hidden;border:1px solid rgba(46,92,58,0.06)
+    }
+
+    header{background:var(--bloque-principal);color:white;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+    header h1{font-family:var(--font-display);font-size:18px;letter-spacing:0.6px}
+    nav a{color:rgba(255,255,255,0.95);text-decoration:none;margin-left:12px;font-weight:600;font-size:13px}
+
+    main{padding:20px}
+    .hero{
+      height:360px;
+      background-image: url('/mnt/data/A_digital_graphic_design_displays_the_welcome_scre.png');
+      background-size:cover;background-position:center;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--bloque-principal);
+      text-align:center;position:relative;overflow:hidden
+    }
+    .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom, rgba(214,231,211,0.15), rgba(214,231,211,0.6));}
+    .hero h2{position:relative;font-family:var(--font-display);font-size:28px;margin-bottom:8px}
+    .hero p{position:relative;color:rgba(26,26,26,0.8);margin-bottom:14px}
+    .btn{background:var(--bloque-principal);color:white;padding:10px 22px;border-radius:12px;text-decoration:none;display:inline-block;font-weight:700}
+
+    /* Tarjetas de servicios */
+    .cards{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+    .card{background:var(--bloque-terciario);border-radius:12px;padding:var(--card-padding);display:flex;align-items:center;gap:14px}
+    .card .icon{width:48px;height:48px;border-radius:8px;background:transparent;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--bloque-principal)}
+    .card h3{font-size:18px;font-weight:700}
+    .card p{font-size:13px;color:rgba(26,26,26,0.8)}
+    .small-btn{background:var(--bloque-secundario);color:white;padding:8px 12px;border-radius:22px;font-weight:700;text-decoration:none}
+
+    /* Habitaciones - lista simple */
+    .rooms{display:flex;flex-direction:column;gap:14px}
+    .room{background:#fff;border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 6px 14px rgba(46,92,58,0.04)}
+    .room h4{font-size:16px}
+    .room p{font-size:13px;color:rgba(26,26,26,0.7)}
+
+    /* Form reservas */
+    form{display:flex;flex-direction:column;gap:12px}
+    input[type='text'], input[type='email'], input[type='date']{padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.06)}
+
+    /* Perfil */
+    .profile{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:center}
+    .avatar{width:72px;height:72px;border-radius:12px;background-image:url('/mnt/data/A_digital_graphic_design_displays_the_welcome_scre.png');background-size:cover}
+    .profile h3{margin-bottom:6px}
+    .profile p{font-size:13px;color:rgba(26,26,26,0.7)}
+
+    /* Admin simple */
+    .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .admin-grid .box{background:var(--bloque-terciario);padding:12px;border-radius:10px;text-align:center}
+
+    footer{padding:12px 20px;background:transparent;text-align:center;font-size:13px;color:rgba(26,26,26,0.6)}
+
+    /* Ocultar secciones por defecto */
+    section{display:none}
+    section.active{display:block}
+
+    /* Responsive minor tweaks */
+    @media(min-width:520px){:root{--max-width:520px}}
+
+  </style>
+</head>
+<body>
+  <div class="device" role="application">
+    <header>
+      <h1>Hotel Natural Hills</h1>
+      <nav aria-label="Navegación principal">
+        <a href="#" data-target="inicio" class="nav-link">Inicio</a>
+        <a href="#" data-target="servicios" class="nav-link">Servicios</a>
+        <a href="#" data-target="habitaciones" class="nav-link">Habitaciones</a>
+        <a href="#" data-target="reservas" class="nav-link">Reservas</a>
+        <a href="#" data-target="perfil" class="nav-link">Mi perfil</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Inicio -->
+      <section id="inicio" class="active">
+        <div class="hero" role="img" aria-label="Imagen principal del hotel">
+          <h2>Hotel Natural Hills</h2>
+          <p>Bienvenidos — Reserva ahora y disfruta de la naturaleza</p>
+          <a class="btn" href="#" data-target="reservas">Reservar</a>
+        </div>
+      </section>
+
+      <!-- Servicios -->
+      <section id="servicios">
+        <h2 style="text-align:center;margin-bottom:12px;font-family:var(--font-display);font-size:28px;color:var(--bloque-principal)">SERVICIOS</h2>
+        <div class="cards">
+          <div class="card">
+            <div class="icon">🌿</div>
+            <div style="flex:1">
+              <h3>SPA</h3>
+              <p>Relajación y tratamientos con ingredientes naturales.</p>
+            </div>
+            <a class="small-btn" href="#">VER DETALLES</a>
+          </div>
+
+          <div class="card">
+            <div class="icon">🏊‍♀️</div>
+            <div style="flex:1">
+              <h3>PISCINA</h3>
+              <p>Piscina exterior con vista a las colinas.</p>
+            </div>
+            <a class="small-btn" href="#">VER DETALLES</a>
+          </div>
+
+          <div class="card">
+            <div class="icon">🍽️</div>
+            <div style="flex:1">
+              <h3>RESTAURANTE</h3>
+              <p>Cocina local con ingredientes frescos.</p>
+            </div>
+            <a class="small-btn" href="#">VER DETALLES</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Habitaciones -->
+      <section id="habitaciones">
+        <h2 style="text-align:center;margin-bottom:18px;font-family:var(--font-display);font-size:26px;color:var(--bloque-principal)">HABITACIONES</h2>
+        <div class="rooms">
+          <article class="room">
+            <div>
+              <h4>Estándar</h4>
+              <p>Habitación cómoda con cama matrimonial.</p>
+            </div>
+            <a class="small-btn" href="#">RESERVAR</a>
+          </article>
+
+          <article class="room">
+            <div>
+              <h4>Deluxe</h4>
+              <p>Más espacio y comodidades mejoradas.</p>
+            </div>
+            <a class="small-btn" href="#">RESERVAR</a>
+          </article>
+
+          <article class="room">
+            <div>
+              <h4>Suite</h4>
+              <p>Espaciosa y con servicios adicionales.</p>
+            </div>
+            <a class="small-btn" href="#">RESERVAR</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- Reservas -->
+      <section id="reservas">
+        <h2 style="text-align:center;margin-bottom:16px;font-family:var(--font-display);font-size:26px;color:var(--bloque-principal)">RESERVAS</h2>
+        <form id="reservaForm">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" placeholder="Tu nombre" required />
+
+          <label for="apellido">Apellido</label>
+          <input id="apellido" type="text" placeholder="Tu apellido" required />
+
+          <label for="email">Correo electrónico</label>
+          <input id="email" type="email" placeholder="ejemplo@mail.com" required />
+
+          <div style="display:flex;gap:8px;">
+            <div style="flex:1">
+              <label for="entrada">Fecha de entrada</label>
+              <input id="entrada" type="date" required />
+            </div>
+            <div style="flex:1">
+              <label for="salida">Fecha de salida</label>
+              <input id="salida" type="date" required />
+            </div>
+          </div>
+
+          <button type="submit" class="btn" style="margin-top:6px">RESERVAR</button>
+        </form>
+      </section>
+
+      <!-- Mi perfil -->
+      <section id="perfil">
+        <h2 style="text-align:center;margin-bottom:12px;font-family:var(--font-display);font-size:26px;color:var(--bloque-principal)">MI PERFIL</h2>
+        <div class="profile">
+          <div class="avatar" role="img" aria-label="Avatar del usuario"></div>
+          <div>
+            <h3>Danna Valeria</h3>
+            <p>Correo: danna@example.com</p>
+            <p>Reservas realizadas: 2</p>
+            <div style="margin-top:10px">
+              <a class="small-btn" href="#">Editar perfil</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel administrador -->
+      <section id="admin">
+        <h2 style="text-align:center;margin-bottom:12px;font-family:var(--font-display);font-size:24px;color:var(--bloque-principal)">PANEL ADMIN</h2>
+        <div class="admin-grid">
+          <div class="box">Gestión de Usuarios</div>
+          <div class="box">Gestión Habitaciones</div>
+          <div class="box">Gestión Reservas</div>
+          <div class="box">Gestión Servicios</div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      Diseño frontend - Hotel Natural Hills • Implementado con HTML / CSS / JS • Mockup de interfaz móvil
+    </footer>
+  </div>
+
+  <script>
+    // Navegación entre secciones (simple SPA)
+    const links = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('main section');
+
+    function showSection(id){
+      sections.forEach(s=>{
+        if(s.id===id){s.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+        else s.classList.remove('active');
+      })
+    }
+
+    links.forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault(); const t = a.dataset.target;
+        showSection(t);
+      })
+    })
+
+    // Permite enlaces internos con data-target en botones
+    document.body.addEventListener('click', e=>{
+      const t = e.target.closest('[data-target]');
+      if(!t) return; e.preventDefault(); showSection(t.dataset.target);
+    })
+
+    // Manejo del formulario (simulación)
+    const form = document.getElementById('reservaForm');
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const nombre = form.querySelector('#nombre').value.trim();
+      const entrada = form.querySelector('#entrada').value;
+      const salida = form.querySelector('#salida').value;
+      if(!nombre || !entrada || !salida){alert('Por favor completa los campos obligatorios.');return}
+      alert('Reserva registrada (simulación): ' + nombre + ' — ' + entrada + ' a ' + salida);
+      form.reset();
+      showSection('perfil');
+    })
+
+    // Inicial: mostrar inicio
+    showSection('inicio');
+  </script>
+</body>
+</html>
